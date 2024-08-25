@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+        <a href="#" id="link-request">Executar a requisição AJAX</a>
+        <div id="result"></div>
+
+
+    <script>
+        
+        $(function () {
+
+            $('#link-request').click( function () {
+
+                $.ajax({
+                    url: 'https://reqres.in/api/users?page=1',
+                    type: 'GET',
+                    beforeSend: function () {
+                        $('#result').html('Carregando...');
+                    }
+                })
+                .done(function (result) {
+
+                    let table = "<table border='1'>";
+
+                    table += '<tr><th>Id</th><th>Email</th><th>Nome</th><th>Sobrenome</th><th>Avatar</th></tr>';
+
+                    $.map(result.data, function (val, i) { table += '<tr>' + '<td>' + val.id + '</td>' + '<td>' + val.email + '</td>' + '<td>' + val.first_name + '</td>' + '<td>' + val.last_name + '</td>' + '<td>' + val.avatar + '</td>' + '</tr>'; });
+
+                    table += "</table>"
+
+                    $("#result").html("");
+                    $("#result").append(table);
+
+                })
+                .fail(function (message) {
+                    console.log('Sua requisição falhou e exibiu a seguinte mensagem:' + message);
+                });
+
+            });
+        });
+
+    </script>
+</body>
+</html>
